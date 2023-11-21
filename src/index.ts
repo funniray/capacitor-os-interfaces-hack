@@ -1,10 +1,25 @@
 import { registerPlugin } from '@capacitor/core';
 
-import type { CapacitorOSHackPlugin } from './definitions';
+import type {CapacitorOSHackPlugin, Interface} from './definitions';
 
-const CapacitorOSHack = registerPlugin<CapacitorOSHackPlugin>('CapacitorOSHack', {
-  web: () => import('./web').then(m => new m.CapacitorOSHackWeb()),
-});
+const osPromises = registerPlugin<CapacitorOSHackPlugin>('CapacitorOSHack', {});
+
+let interfaceCache: Interface[];
+
+export async function prefetchNetworkInterfaces(): Promise<Interface[]> {
+  const {interfaces} = await osPromises.networkInterfaces();
+  interfaceCache = interfaces;
+  return interfaces;
+}
+
+export function networkInterfaces(): Interface[] {
+  if (interfaceCache) {
+    return interfaceCache;
+  } else {
+    throw new Error("You must await prefetchNetworkInterfaces first!");
+  }
+}
 
 export * from './definitions';
-export { CapacitorOSHack };
+export default { prefetchNetworkInterfaces, networkInterfaces }
+export { osPromises };

@@ -2,6 +2,7 @@ package com.getcapacitor;
 
 import static org.junit.Assert.*;
 
+import com.funniray.plugins.os.CapacitorOSHackPlugin;
 import org.junit.Test;
 
 /**

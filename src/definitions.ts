@@ -1,3 +1,12 @@
+export type Interface = {
+  address: string,
+  netmask: null, // Not Implemented
+  family: string,
+  mac: string,
+  internal: boolean,
+  cidr: string
+}
+
 export interface CapacitorOSHackPlugin {
-  echo(options: { value: string }): Promise<{ value: string }>;
+  networkInterfaces(): Promise<{ interfaces: Interface[] }>;
 }
