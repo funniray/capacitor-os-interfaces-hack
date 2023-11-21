@@ -4,15 +4,15 @@ import type {CapacitorOSHackPlugin, Interface} from './definitions';
 
 const osPromises = registerPlugin<CapacitorOSHackPlugin>('CapacitorOSHack', {});
 
-let interfaceCache: Interface[];
+let interfaceCache: {[key: string]: Interface[]};
 
-export async function prefetchNetworkInterfaces(): Promise<Interface[]> {
-  const {interfaces} = await osPromises.networkInterfaces();
+export async function prefetchNetworkInterfaces(): Promise<{[key: string]: Interface[]}> {
+  const interfaces = await osPromises.networkInterfaces();
   interfaceCache = interfaces;
   return interfaces;
 }
 
-export function networkInterfaces(): Interface[] {
+export function networkInterfaces(): {[key: string]: Interface[]} {
   if (interfaceCache) {
     return interfaceCache;
   } else {

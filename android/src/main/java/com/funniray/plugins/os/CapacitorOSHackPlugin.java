@@ -26,10 +26,11 @@ public class CapacitorOSHackPlugin extends Plugin {
 
     @PluginMethod
     public void networkInterfaces(PluginCall call) {
-        JSArray ret = new JSArray();
+        JSObject ret = new JSObject();
         try {
             for (Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements();) {
                 NetworkInterface networkInterface = interfaces.nextElement();
+                JSArray interfacesArr = new JSArray();
                 for (InterfaceAddress address : networkInterface.getInterfaceAddresses()) {
                     JSObject interObj = new JSObject();
                     if (address.getAddress() instanceof Inet4Address) {
@@ -42,14 +43,15 @@ public class CapacitorOSHackPlugin extends Plugin {
                     interObj.put("internal", networkInterface.isLoopback());
                     interObj.put("cidr", address.getAddress().getHostAddress() + "/" + address.getNetworkPrefixLength());
 
-                    ret.put(interObj);
+                    interfacesArr.put(interObj);
                 }
+                ret.put(networkInterface.getDisplayName(), interfacesArr);
             }
         } catch (SocketException e) {
             call.reject(e.getLocalizedMessage());
             return;
         }
 
-        call.resolve(new JSObject().put("interfaces", ret));
+        call.resolve(ret);
     }
 }

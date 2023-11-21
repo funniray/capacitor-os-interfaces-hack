@@ -8,6 +8,6 @@ export declare type Interface = {
 };
 export interface CapacitorOSHackPlugin {
     networkInterfaces(): Promise<{
-        interfaces: Interface[];
+        [key: string]: Interface[];
     }>;
 }

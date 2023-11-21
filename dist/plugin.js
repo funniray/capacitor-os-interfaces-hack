@@ -4,7 +4,7 @@ var capacitorCapacitorOSHack = (function (exports, core) {
     const osPromises = core.registerPlugin('CapacitorOSHack', {});
     let interfaceCache;
     async function prefetchNetworkInterfaces() {
-        const { interfaces } = await osPromises.networkInterfaces();
+        const interfaces = await osPromises.networkInterfaces();
         interfaceCache = interfaces;
         return interfaces;
     }
